@@ -92,6 +92,10 @@ program token.aleo {
     transition transfer_private_to_public(sender: token, public receiver: address, public amount: u64) -> token {
         // Checks the given token record has a sufficient token amount.
         // This `sub` operation is safe, and the proof will fail if an underflow occurs.
+
+        // Ensure the blocj height is greater than the vesting period.
+        console.assert(block.height > sender.vestingPeriod, "Vesting period not reached");
+
         // `difference` holds the change amount for the caller.
         let difference: u64 = sender.amount - amount;
 
